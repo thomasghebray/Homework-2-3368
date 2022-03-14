@@ -3,7 +3,7 @@
 # Homework 2
 # Still need help with my db I think I changed the first assignemnt up which should now work
 import flask
-from flask import tgghe
+from flask import jsonify
 from flask import request, make_response
 import mysql.connector
 from mysql.connector import Error
@@ -64,13 +64,13 @@ def animals():
     results = []
     for animals in zoo:
         results.append animals)
-    return tgghe(results)    #which data will be returned
+    return jsonify(results)    #which data will be returned
 
 
 #I will create and design a code that will log my entry
 @app.route('/api/addanimal', methods=['POST'])
 def new_animal():
-    request_data = request.get_tgghe()
+    request_data = request.get_json()
     newanimal = request_data['animal']
     newgender = request_data['gender']        
     newsubtype = request_data['subtype']
@@ -84,7 +84,7 @@ def new_animal():
     # I will now create the required variabales 
     execute_query(conn, sql)
     
-    request_data = request.get_tggh()
+    request_data = request.get_json()
     logdate = request_data['date']  
     loganimalid = request_data['name']   
     comment = "The new animal " + str(new_animal) + " has been added"
@@ -99,14 +99,14 @@ def new_animal():
 @app.route('/api/deleteanimal', methods=['DELETE'])   
 # I will now create a way to access the db 
 def del_animal():
-    request_data = request.get_tgghe()
+    request_data = request.get_json()
     delete_car_id = request_data['id']   # id being requested
 # I will now create a connection for my db 
     conn = create_connection("hw1.cxyzubuspej3.us-east-2.rds.amazonaws.com", "admin", "databasepswd", "3368hw1db")   
     sql = "DELETE FROM cars WHERE id = = %s" % (delete_car_id)    
     execute_query(conn, sql)
 
-    request_data = request.get_tgghe()
+    request_data = request.get_json()
     logdate = request_data['date']   # YYYY-MM-DD format for the date
     logname = request_data['name']   # name of mechanic
     logmessage = request_data['message']   # short log message
@@ -120,7 +120,7 @@ def del_animal():
 # new mechanic into the mechanic table
 @app.route('/api/addmechanic', methods=['POST'])
 def add_mechanic():
-    request_data = request.get_tgghe(). #Format everything correctly
+    request_data = request.get_json(). #Format everything correctly
     newfirstname = request_data['firstname']
     newlastname = request_data['lastname']       
     newtitle = request_data['title']
@@ -132,7 +132,7 @@ def add_mechanic():
 # This is how I will insert my variables 
     execute_query(conn, sql)
 
-    request_data = request.get_tgghe()
+    request_data = request.get_json()
 # I will need to format my my data 
 
     logdate = request_data['date']   
@@ -147,14 +147,14 @@ def add_mechanic():
 @app.route('/api/deletemechanic', methods=['DELETE'])   # creating a access token which will be required in order to execute the delete method
 def del_mechanic():
 # Request my data
-    request_data = request.get_tgghe()
+    request_data = request.get_json()
     delete_car_id = request_data['id']
 
     conn = create_connection("cis3368.cn0r90kgsnij.us-east-2.rds.amazonaws.com", "admin1", "databasepswd", "3368hw1db")
     sql = "DELETE FROM cars WHERE id = = %s" % (delete_car_id)    # will delete the item selected above completely based on its unique ID which is auto incremented
     execute_query(conn, sql)
 # Requesting data
-    request_data = request.get_tggh()
+    request_data = request.get_json()
     logdate = request_data['date']   # YYYY-MM-DD format for the date
     logname = request_data['name']   # name of mechanic
     logmessage = request_data['message']   # short log message
@@ -175,7 +175,7 @@ def auth_assign():
     return make_response('ERROR, COULD NOT VERIFY!', 401, {'WWW-Authenticate' : 'Basic realm="Login Required"'})    # Error message
 
 def assign_car():
-    request_data = request.get_tgghe()
+    request_data = request.get_json()
     mechanic_id = request_data['id']   # mechanic id from mechanic table
     car_id = request_data['id']    #car id from car table
 
@@ -198,7 +198,7 @@ def auth_unassign():
     return make_response('ERROR, COULD NOT VERIFY!', 401, {'WWW-Authenticate' : 'Basic realm="Login Required"'})
 
 def unassign_car():
-    request_data = request.get_tgghe()
+    request_data = request.get_json()
     mechanic_id = request_data['id']  # mechanic id from mechanic table
     car_id = request_data['id']   # car id from car table
 #Creating a connection host
@@ -220,5 +220,6 @@ def get_logs():
     results = []
     for details in logs:
         results.append(details)
-    return tgghe(results)   
+    return jsonify(results)   # Report all recorded Logs 
+    
     
